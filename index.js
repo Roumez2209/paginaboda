@@ -1,25 +1,31 @@
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
+// Importar Express
+const express = require("express");
+const app = express();
 
-const server = http.createServer((req, res) => {
-  // Ruta a tu HTML
-  const filePath = path.join(__dirname, "index.html");
+// Middleware para JSON (por si usas APIs)
+app.use(express.json());
 
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Error cargando la página");
-    } else {
-      res.writeHead(200, { "Content-Type": "text/html" });
-      res.end(data);
-    }
+// Ruta principal
+app.get("/", (req, res) => {
+  res.send("🚀 Servidor Node.js funcionando en Render");
+});
+
+// Ruta extra de prueba
+app.get("/hola", (req, res) => {
+  res.send("👋 Hola! Esta es otra ruta en tu servidor");
+});
+
+// Ruta API de ejemplo
+app.get("/api/datos", (req, res) => {
+  res.json({
+    mensaje: "Hola desde la API",
+    fecha: new Date(),
   });
 });
 
+// Render asigna automáticamente el puerto en process.env.PORT
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => { ... });
-
-
+app.listen(PORT, () => {
+  console.log(`✅ Servidor corriendo en el puerto ${PORT}`);
 });
 
